@@ -21,7 +21,7 @@ public class InsuranceCalculationRequestDto {
 
     @ApiModelProperty("The id to identify the calculation.")
     @Positive
-    @JsonProperty("living-area")
+    @JsonProperty("living_area")
     private double livingArea;
 
 }
