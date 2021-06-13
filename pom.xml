@@ -22,6 +22,7 @@
         <spring-fox.version>3.0.0</spring-fox.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <version.jacoco>0.8.6</version.jacoco>
+        <version.cucumber>6.10.4</version.cucumber>
     </properties>
 
     <dependencies>
@@ -52,6 +53,30 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${version.cucumber}</version>
             <scope>test</scope>
         </dependency>
         <!-- Swagger UI -->
