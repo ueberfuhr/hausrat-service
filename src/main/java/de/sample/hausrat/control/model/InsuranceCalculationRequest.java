@@ -14,7 +14,7 @@ import javax.validation.constraints.Positive;
 public class InsuranceCalculationRequest {
 
     @NotNull
-    private final Product product;
+    private final String product;
     @Positive
     private final double livingArea;
 

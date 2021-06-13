@@ -1,6 +1,14 @@
 # Allgemeine Einstellungen
 server:
   port: 8080
+  error:
+    include-stacktrace: never
+    include-message: never
+
+calculation:
+  currency:
+    precision: 2
+    code: EUR
 
 logging:
   level:

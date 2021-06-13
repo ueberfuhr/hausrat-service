@@ -11,7 +11,7 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "InsuranceCalculation")
 @Data
@@ -41,5 +41,5 @@ public class InsuranceCalculationEntity {
 
     @NotNull
     @PastOrPresent
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 }

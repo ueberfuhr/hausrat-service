@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(value = "InsuranceCalculationResult", description = "The result of an insurance calculation.")
 @Data
@@ -34,6 +34,6 @@ public class InsuranceCalculationResultDto {
     @ApiModelProperty("The date when the calculation was done.")
     @NotNull
     @PastOrPresent
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 
 }
