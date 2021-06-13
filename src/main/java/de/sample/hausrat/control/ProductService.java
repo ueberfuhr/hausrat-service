@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 public class ProductService {
 
     private final ProductRepository repo;
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final ProductMapper mapper;
 
     @PostConstruct
