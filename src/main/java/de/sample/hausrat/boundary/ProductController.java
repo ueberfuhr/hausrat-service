@@ -2,7 +2,7 @@ package de.sample.hausrat.boundary;
 
 import de.sample.hausrat.boundary.model.ProductDto;
 import de.sample.hausrat.boundary.model.mappers.ProductDtoMapper;
-import de.sample.hausrat.control.ProductService;
+import de.sample.hausrat.domain.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

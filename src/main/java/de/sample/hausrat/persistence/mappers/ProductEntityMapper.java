@@ -1,11 +1,11 @@
-package de.sample.hausrat.control.model.mappers;
+package de.sample.hausrat.persistence.mappers;
 
-import de.sample.hausrat.control.model.Product;
+import de.sample.hausrat.domain.model.Product;
 import de.sample.hausrat.entity.ProductEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
+public interface ProductEntityMapper {
 
     Product map(ProductEntity p);
 

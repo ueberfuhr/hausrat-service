@@ -1,4 +1,4 @@
-package de.sample.hausrat.boundary;
+package de.sample.hausrat.boundary.config;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +18,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(code = BAD_REQUEST)
     protected void handleValidationException() {
+        // nothing to do here, just for annotation scanning
     }
 
 }

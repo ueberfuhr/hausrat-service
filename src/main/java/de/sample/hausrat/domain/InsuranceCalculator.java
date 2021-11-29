@@ -1,11 +1,11 @@
-package de.sample.hausrat.control;
+package de.sample.hausrat.domain;
 
-import de.sample.hausrat.control.model.InsuranceCalculationRequest;
-import de.sample.hausrat.control.model.Price;
+import de.sample.hausrat.domain.model.InsuranceCalculationRequest;
+import de.sample.hausrat.domain.model.Price;
 
 /**
  * Provides the calculation of the sum insured based on
- * the {@link de.sample.hausrat.control.model.Product} and the living space.
+ * the {@link de.sample.hausrat.domain.model.Product} and the living space.
  */
 @FunctionalInterface
 public interface InsuranceCalculator {

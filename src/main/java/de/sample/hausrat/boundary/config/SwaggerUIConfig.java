@@ -1,5 +1,6 @@
-package de.sample.hausrat;
+package de.sample.hausrat.boundary.config;
 
+import de.sample.hausrat.InsuranceApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -20,7 +21,7 @@ public class SwaggerUIConfig {
         return new Docket(DocumentationType.OAS_30) //
                 .useDefaultResponseMessages(false) //
                 .select() //
-                .apis(basePackage(SwaggerUIConfig.class.getPackage().getName())) //
+                .apis(basePackage(InsuranceApplication.class.getPackage().getName())) //
                 .paths(PathSelectors.any()) //
                 .build() //
                 .apiInfo(apiInfo());

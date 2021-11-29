@@ -1,4 +1,4 @@
-package de.sample.hausrat.control.model;
+package de.sample.hausrat.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

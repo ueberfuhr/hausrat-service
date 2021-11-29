@@ -14,6 +14,8 @@ We can clone this repository and start the service by the following command:
 mvn spring-boot:run
 ```
 
+We can then find the Swagger UI under `http://localhost:8080/swagger-ui/`.
+
 Alternatively, we can also build the project and start it using
 
 ``` bash
@@ -32,5 +34,13 @@ The following technologies are used exemplary within this project:
 - Lombok
 - MapStruct
 - Tests are written using
+  - Spring Boot Tests with Mockito und AssertJ
   - Cucumber (JUnit)
-  - Spock and Groovy
+  - Spock and Groovy (for comparison with Java-based tests)
+
+## Architecture
+
+The project is built based on the idea of [Hexagonal Architectures](https://www.baeldung.com/hexagonal-architecture-ddd-spring). It defines 3 subpackages:
+ - domain (the model and the business logic)
+ - boundary (the REST service implementation that allows access to the domain)
+ - persistence (the implementation of the repositories defined by the domain using Spring Data JPA)

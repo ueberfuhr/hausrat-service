@@ -1,8 +1,8 @@
-package de.sample.hausrat.control;
+package de.sample.hausrat.domain;
 
-import de.sample.hausrat.control.model.InsuranceCalculationRequest;
-import de.sample.hausrat.control.model.Price;
-import de.sample.hausrat.control.model.Product;
+import de.sample.hausrat.domain.model.InsuranceCalculationRequest;
+import de.sample.hausrat.domain.model.Price;
+import de.sample.hausrat.domain.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 
 @Component

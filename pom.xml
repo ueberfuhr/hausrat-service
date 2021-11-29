@@ -21,9 +21,11 @@
         <java.version>11</java.version>
         <spring-fox.version>3.0.0</spring-fox.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <version.jacoco>0.8.6</version.jacoco>
+        <version.jacoco>0.8.7</version.jacoco>
+        <version.cucumber>7.1.0</version.cucumber>
         <version.spock>2.0-M3-groovy-3.0</version.spock>
         <version.groovy>3.0.8</version.groovy>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -67,12 +69,30 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${version.cucumber}</version>
+            <scope>test</scope>
         </dependency>
         <!-- Spock and Groovy -->
         <dependency>
