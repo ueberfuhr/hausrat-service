@@ -1,9 +1,9 @@
-package de.sample.hausrat.control.repository;
+package de.sample.hausrat.persistence.repository;
 
 import de.sample.hausrat.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, String> {
+public interface ProductJpaRepository extends JpaRepository<ProductEntity, String> {
 }

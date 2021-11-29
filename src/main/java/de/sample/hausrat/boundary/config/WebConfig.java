@@ -1,4 +1,4 @@
-package de.sample.hausrat;
+package de.sample.hausrat.boundary.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,15 +13,15 @@ import static org.springframework.http.HttpHeaders.*;
 @Configuration
 public class WebConfig {
 
+    // read from environment variable (different in local, test and prod stage)
+    @Value("${CORS_ALLOWED_ORIGINS:*}")
+    String allowedOrigins;
+    @Value("${CORS_ALLOW_CREDENTIALS:false}")
+    boolean allowCredentials;
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
-
-            // read from environment variable (different in local, test and prod stage)
-            @Value("${CORS_ALLOWED_ORIGINS:*}")
-            String allowedOrigins;
-            @Value("${CORS_ALLOW_CREDENTIALS:false}")
-            boolean allowCredentials;
 
             @Override
             public void addCorsMappings(final CorsRegistry registry) {

@@ -3,8 +3,8 @@ package de.sample.hausrat.boundary;
 import de.sample.hausrat.InsuranceApplication;
 import de.sample.hausrat.boundary.model.ProductDto;
 import de.sample.hausrat.boundary.model.mappers.ProductDtoMapper;
-import de.sample.hausrat.control.ProductService;
-import de.sample.hausrat.control.model.Product;
+import de.sample.hausrat.domain.ProductService;
+import de.sample.hausrat.domain.model.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = InsuranceApplication.class)

@@ -1,9 +1,7 @@
 package de.sample.hausrat.boundary.model.mappers;
 
 import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
-import de.sample.hausrat.boundary.model.ProductDto;
-import de.sample.hausrat.control.model.InsuranceCalculationResult;
-import de.sample.hausrat.control.model.Product;
+import de.sample.hausrat.domain.model.InsuranceCalculationResult;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = InsuranceCalculationRequestDtoMapper.class)

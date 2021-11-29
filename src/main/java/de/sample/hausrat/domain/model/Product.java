@@ -1,4 +1,4 @@
-package de.sample.hausrat.control.model;
+package de.sample.hausrat.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,17 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-/**
- * A request to the {@link de.sample.hausrat.control.InsuranceCalculator}.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InsuranceCalculationRequest {
+public class Product {
 
     @NotNull
-    private String product;
+    private String name;
     @Positive
-    private double livingArea;
+    private int price;
+
+    // could be enhanced
 
 }
