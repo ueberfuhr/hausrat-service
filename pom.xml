@@ -21,8 +21,9 @@
         <java.version>11</java.version>
         <spring-fox.version>3.0.0</spring-fox.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <version.jacoco>0.8.6</version.jacoco>
-        <version.cucumber>6.10.4</version.cucumber>
+        <version.jacoco>0.8.7</version.jacoco>
+        <version.cucumber>7.1.0</version.cucumber>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
 
     <dependencies>
