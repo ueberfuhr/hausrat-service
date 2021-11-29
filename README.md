@@ -14,6 +14,8 @@ We can clone this repository and start the service by the following command:
 mvn spring-boot:run
 ```
 
+We can then find the Swagger UI under `http://localhost:8080/swagger-ui/`.
+
 Alternatively, we can also build the project and start it using
 
 ``` bash
