@@ -26,7 +26,8 @@ java -jar target/hausrat-service.jar
 There's also a `Dockerfile` to run the built JAR within a container.
 
 ``` bash
-
+docker build -t "hausrat-service:1.0.0" .
+docker run -p 8080:8080 "hausrat-service:1.0.0"
 ```
 
 ## Technologies
