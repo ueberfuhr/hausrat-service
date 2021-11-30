@@ -38,6 +38,7 @@ The following technologies are used exemplary within this project:
 - SpringFox Swagger UI
 - Lombok
 - MapStruct
+- Spring Security with Keycloak (see [separate instructions](security/README.md))
 - Tests are written using
   - Spring Boot Tests with Mockito und AssertJ
   - Cucumber (JUnit)
