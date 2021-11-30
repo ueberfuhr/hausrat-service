@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 public interface ProductDtoMapper {
 
     ProductDto map(Product p);
-
-    // do not map the other side because products are read-only in the public API
+    
+    Product map(ProductDto p);
 
 }

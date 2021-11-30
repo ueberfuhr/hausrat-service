@@ -37,4 +37,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Optional<Product> find(String name) {
         return this.repo.findById(name).map(mapper::map);
     }
+
+    @Override
+    public void delete(String name) {
+        this.repo.deleteById(name);
+    }
 }

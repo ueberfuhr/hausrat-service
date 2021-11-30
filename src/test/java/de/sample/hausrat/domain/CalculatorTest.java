@@ -33,9 +33,14 @@ class CalculatorTest {
     void setup() {
         lenient().when(productService.find(anyString())).thenAnswer(i -> {
             switch (i.getArgument(0).toString()) {
-            case "COMPACT": return Optional.of(new Product("COMPACT", 650));
-            case "OPTIMAL": return Optional.of(new Product("OPTIMAL", 700));
-            default: return Optional.empty();
+            case "COMPACT":
+                return Optional.of(new Product("COMPACT", 650));
+            case "OPTIMAL":
+                return Optional.of(new Product("OPTIMAL", 700));
+            case "invalid-name":
+                return Optional.of(new Product("invalid-name", 1));
+            default:
+                return Optional.empty();
             }
         });
     }
@@ -75,7 +80,8 @@ class CalculatorTest {
         return Stream.of( //
           Arguments.of("COMPACT", -1), //
           Arguments.of("COMPACT", 0), //
-          Arguments.of("NOTEXISTING", 100) //
+          Arguments.of("NOTEXISTING", 100), //
+          Arguments.of("invalid-name", 100) //
         );
     }
 

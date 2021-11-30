@@ -21,6 +21,7 @@ class CalculatorSpockTest extends Specification {
             switch (name) {
                 case "COMPACT": return Optional.of(new Product("COMPACT", 650))
                 case "OPTIMAL": return Optional.of(new Product("OPTIMAL", 700))
+                case "invalid-name": return Optional.of(new Product("invalid-name", 1))
                 default: return Optional.empty()
             }
         }
@@ -56,10 +57,11 @@ class CalculatorSpockTest extends Specification {
         thrown ValidationException
 
         where:
-        product       | livingArea
-        "COMPACT"     | -1
-        "COMPACT"     | 0
-        "NOTEXISTING" | 100
+        product        | livingArea
+        "COMPACT"      | -1
+        "COMPACT"      | 0
+        "NOTEXISTING"  | 100
+        "invalid-name" | 100
     }
 
 }
