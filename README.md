@@ -25,6 +25,10 @@ java -jar target/hausrat-service.jar
 
 There's also a `Dockerfile` to run the built JAR within a container.
 
+``` bash
+
+```
+
 ## Technologies
 
 The following technologies are used exemplary within this project:
