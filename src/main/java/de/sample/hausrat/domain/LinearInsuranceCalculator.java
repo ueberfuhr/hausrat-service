@@ -6,14 +6,15 @@ import de.sample.hausrat.domain.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Component
 @RequiredArgsConstructor
+@Validated
 public class LinearInsuranceCalculator implements InsuranceCalculator {
 
     private final ProductService service;
@@ -33,7 +34,8 @@ public class LinearInsuranceCalculator implements InsuranceCalculator {
     }
 
     @Override
-    public Price calculate(@Valid InsuranceCalculationRequest req) {
+    public Price calculate(InsuranceCalculationRequest req) {
+        if(null == service) throw new IllegalStateException();
         Product product = service.find(req.getProduct())
                 .orElseThrow(() -> new ValidationException(
                         String.format("No product could be found with name \"%s\"!", req.getProduct())
