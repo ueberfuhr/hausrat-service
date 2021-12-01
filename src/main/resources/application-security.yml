@@ -1,0 +1,14 @@
+# Activate this profile to run security settings
+spring:
+  autoconfigure:
+    exclude: # disable exclusion of security
+keycloak:
+  auth-server-url: http://localhost:8180/auth # Keycloak server url
+  realm: Hausrat Service Realm # Keycloak Realm
+  resource: login-app # Keycloak Client
+  public-client: true
+  principal-attribute: preferred_username
+  ssl-required: external
+  credentials:
+    secret: 66ce1cc4-5426-4743-bcd7-06c2b0cdd581
+

@@ -35,11 +35,10 @@ public class LinearInsuranceCalculator implements InsuranceCalculator {
 
     @Override
     public Price calculate(InsuranceCalculationRequest req) {
-        if(null == service) throw new IllegalStateException();
         Product product = service.find(req.getProduct())
-                .orElseThrow(() -> new ValidationException(
-                        String.format("No product could be found with name \"%s\"!", req.getProduct())
-                ));
+          .orElseThrow(() -> new ValidationException(
+            String.format("No product could be found with name \"%s\"!", req.getProduct())
+          ));
         return price(req.getLivingArea() * product.getPrice());
     }
 }

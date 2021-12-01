@@ -15,6 +15,7 @@ mvn spring-boot:run
 ```
 
 We can then find the Swagger UI under `http://localhost:8080/swagger-ui/`.
+(You should be redirected automatically to the Swagger UI when using `http://localhost:8080`.)
 
 Alternatively, we can also build the project and start it using
 
