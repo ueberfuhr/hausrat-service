@@ -39,7 +39,6 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
           .antMatchers("/swagger-ui/").authenticated()
           // force authentication for all requests (and use global method security)
           .anyRequest().permitAll();
-        //
     }
 
     /*
