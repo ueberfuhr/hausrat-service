@@ -26,7 +26,7 @@ management:
 
 spring:
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration, org.keycloak.adapters.springboot.KeycloakAutoConfiguration
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration, org.keycloak.adapters.springboot.KeycloakAutoConfiguration, org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   # Datasource: H2 im lokalen Verzeichnis ".local-db" (von Versionierung ausgeschlossen)
   datasource:
     url: jdbc:h2:./.local-db/data
