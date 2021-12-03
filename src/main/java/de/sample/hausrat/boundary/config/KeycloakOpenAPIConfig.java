@@ -44,7 +44,7 @@ public class KeycloakOpenAPIConfig {
     @Bean
     @Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER)
     OperationBuilderPlugin securityNotesBuilder(final DescriptionResolver descriptions) {
-        // reads out the @Secured annotation and prints a not into the Swagger UI.
+        // reads out the @Secured annotation and prints a note into the Swagger UI.
         return new OperationBuilderPlugin() {
 
             @Override
