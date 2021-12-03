@@ -1,7 +1,7 @@
 package de.sample.hausrat.persistence.mappers;
 
 import de.sample.hausrat.domain.model.Product;
-import de.sample.hausrat.entity.ProductEntity;
+import de.sample.hausrat.persistence.entity.ProductEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

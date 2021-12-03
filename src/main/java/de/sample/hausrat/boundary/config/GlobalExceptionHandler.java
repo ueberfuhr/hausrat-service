@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ValidationException;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -30,7 +31,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(code = FORBIDDEN)
     protected void handleAccessDenied(Authentication auth) {
         // log the authorities
-        logger.debug(String.format("Request denied for user %s with roles %s.", auth.getPrincipal(), auth.getAuthorities()));
+        logger.debug(Optional.ofNullable(auth)
+          .map(a -> String.format("Request denied for user %s with roles %s.", a.getPrincipal(), a.getAuthorities()))
+          .orElse("Request denied for unauthenticated user.")
+        );
     }
 
 }

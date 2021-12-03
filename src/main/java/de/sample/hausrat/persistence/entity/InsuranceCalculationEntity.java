@@ -1,4 +1,4 @@
-package de.sample.hausrat.entity;
+package de.sample.hausrat.persistence.entity;
 
 import lombok.Data;
 
@@ -32,6 +32,8 @@ public class InsuranceCalculationEntity {
 
     @Positive
     private double livingArea;
+
+    private String principal;
 
     @NotNull
     private BigDecimal value;

@@ -23,6 +23,9 @@ public class InsuranceCalculationResultDto {
     @Valid
     private InsuranceCalculationRequestDto request;
 
+    @ApiModelProperty("The account that triggered the calculation.")
+    private String principal;
+
     @ApiModelProperty("The value of the sum insured.")
     @NotNull
     private BigDecimal value;

@@ -17,9 +17,11 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
+import static de.sample.hausrat.boundary.config.SecurityConstants.SECURITY_PROFILE;
+
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured(...)
-@Profile("security")
+@Profile(SECURITY_PROFILE)
 class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     public static final String AUTHORITY_PREFIX = "ROLE_"; // Spring Security Default
@@ -35,8 +37,7 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http.authorizeRequests()
           // we can set up authorization here alternatively to @Secured methods
-          .antMatchers("/api/v1/*").authenticated()
-          .antMatchers("/swagger-ui/").authenticated()
+          .antMatchers("/api/*").authenticated()
           // force authentication for all requests (and use global method security)
           .anyRequest().permitAll();
     }

@@ -1,6 +1,6 @@
 package de.sample.hausrat.persistence.repository;
 
-import de.sample.hausrat.entity.ProductEntity;
+import de.sample.hausrat.persistence.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

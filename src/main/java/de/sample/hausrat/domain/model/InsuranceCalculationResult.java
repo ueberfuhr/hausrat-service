@@ -17,6 +17,8 @@ public class InsuranceCalculationResult {
     @Valid
     private InsuranceCalculationRequest request;
 
+    private String principal;
+
     @NotNull
     private BigDecimal value;
 

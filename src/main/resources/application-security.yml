@@ -5,7 +5,7 @@ spring:
 keycloak:
   auth-server-url: http://localhost:8180/auth # Keycloak server url
   realm: Hausrat Service Realm # Keycloak Realm
-  resource: login-app # Keycloak Client
+  resource: hausrat-service-clients # Keycloak Client
   public-client: true
   principal-attribute: preferred_username
   ssl-required: external

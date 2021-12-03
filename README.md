@@ -35,11 +35,10 @@ docker run -p 8080:8080 "hausrat-service:1.0.0"
 
 The following technologies are used exemplary within this project:
 
-- Spring Boot (MVC, HATEOAS, Actuator, Validation, Data JPA)
+- Spring Boot (MVC, HATEOAS, Actuator, Validation, Data JPA, Security)
 - SpringFox Swagger UI
 - Lombok
 - MapStruct
-- Spring Security with Keycloak (see [separate instructions](security/README.md))
 - Tests are written using
   - Spring Boot Tests with Mockito und AssertJ
   - Cucumber (JUnit)
@@ -51,3 +50,14 @@ The project is built based on the idea of [Hexagonal Architectures](https://www.
  - domain (the model and the business logic)
  - boundary (the REST service implementation that allows access to the domain)
  - persistence (the implementation of the repositories defined by the domain using Spring Data JPA)
+
+## Particularities
+ - We can optionally run the service with a `secure` profile.
+   - Spring Security with Keycloak (see [separate instructions](security/README.md))
+   - Global Method Security is configured that allows to use annotation based authorization.
+     - see [Konfiguration](src/main/java/de/sample/hausrat/boundary/config/KeycloakWebSecurityConfig.java)
+     - see [Sample Controller](src/main/java/de/sample/hausrat/boundary/ProductController.java)
+   - OpenAPI contains extended descriptions to describe secured operations (🔒 symbol and the allowed roles)
+     - see [OpenAPI Extension](src/main/java/de/sample/hausrat/boundary/config/KeycloakOpenAPIConfig.java)
+   - Because SpringFox 3.0.0 includes an older version of Swagger UI (`3.26.0`), that does not support OpenID Connect Discovery (`3.38.0+`), we overwrite the bundled Swagger UI by a newer version (`4.1.2`)
+     - see the [Swagger UI Files](src/main/resources/META-INF/resources/webjars/springfox-swagger-ui)

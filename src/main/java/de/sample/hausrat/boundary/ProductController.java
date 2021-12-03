@@ -1,6 +1,6 @@
 package de.sample.hausrat.boundary;
 
-import de.sample.hausrat.boundary.config.Authorities;
+import de.sample.hausrat.boundary.config.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.ProductDto;
 import de.sample.hausrat.boundary.model.mappers.ProductDtoMapper;
 import de.sample.hausrat.domain.ProductService;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +64,7 @@ public class ProductController {
       @ApiResponse(code = 400, message = "The product name is not a single word containing uppercase letters and digits, or the submitted product's name does not match the URL of the resource."),
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createProduct(@PathVariable @ProductName String name, @Valid ProductDto dto) {
+    public void createProduct(@PathVariable @ProductName String name, @Valid @RequestBody ProductDto dto) {
         if (!name.equals(dto.getName())) {
             throw new ValidationException("product name is not matching the resource's URL");
         }

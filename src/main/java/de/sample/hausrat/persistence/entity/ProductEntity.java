@@ -1,4 +1,4 @@
-package de.sample.hausrat.entity;
+package de.sample.hausrat.persistence.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

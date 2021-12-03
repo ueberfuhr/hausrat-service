@@ -1,7 +1,7 @@
 package de.sample.hausrat.persistence.mappers;
 
 import de.sample.hausrat.domain.model.InsuranceCalculationResult;
-import de.sample.hausrat.entity.InsuranceCalculationEntity;
+import de.sample.hausrat.persistence.entity.InsuranceCalculationEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
