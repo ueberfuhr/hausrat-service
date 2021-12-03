@@ -37,7 +37,7 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http.authorizeRequests()
           // we can set up authorization here alternatively to @Secured methods
-          .antMatchers("/api/*").authenticated()
+          .antMatchers("/api/**").authenticated()
           // force authentication for all requests (and use global method security)
           .anyRequest().permitAll();
     }
