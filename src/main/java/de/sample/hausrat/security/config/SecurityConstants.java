@@ -1,4 +1,4 @@
-package de.sample.hausrat.boundary.config;
+package de.sample.hausrat.security.config;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,18 +12,19 @@ import java.util.Optional;
 public class SecurityConstants {
 
     public static final String SECURITY_PROFILE = "security";
+    public static final String AUTHORITY_PREFIX = "ROLE_"; // Spring Security Default
 
     @UtilityClass
     public static class Authorities {
 
-        public static final String CUSTOMER = KeycloakWebSecurityConfig.AUTHORITY_PREFIX + "CUSTOMER";
-        public static final String AGENT = KeycloakWebSecurityConfig.AUTHORITY_PREFIX + "AGENT";
+        public static final String CUSTOMER = AUTHORITY_PREFIX + "CUSTOMER";
+        public static final String AGENT = AUTHORITY_PREFIX + "AGENT";
 
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     @Getter
-    enum Roles {
+    public enum Roles {
 
         CUSTOMER(Authorities.CUSTOMER, "customer"),
         AGENT(Authorities.AGENT, "agent");

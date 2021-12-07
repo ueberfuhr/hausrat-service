@@ -1,6 +1,6 @@
 package de.sample.hausrat.boundary;
 
-import de.sample.hausrat.boundary.config.SecurityConstants.Authorities;
+import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.InsuranceCalculationRequestDto;
 import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationRequestDtoMapper;

@@ -1,4 +1,4 @@
-package de.sample.hausrat.boundary.config;
+package de.sample.hausrat.security.config;
 
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
@@ -17,14 +17,12 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-import static de.sample.hausrat.boundary.config.SecurityConstants.SECURITY_PROFILE;
+import static de.sample.hausrat.security.config.SecurityConstants.SECURITY_PROFILE;
 
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured(...)
 @Profile(SECURITY_PROFILE)
 class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
-
-    public static final String AUTHORITY_PREFIX = "ROLE_"; // Spring Security Default
 
     @Override
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
@@ -35,7 +33,9 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests()
+        http
+          .csrf().disable()
+          .authorizeRequests()
           // we can set up authorization here alternatively to @Secured methods
           .antMatchers("/api/**").authenticated()
           // force authentication for all requests (and use global method security)
@@ -66,9 +66,9 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     //@Bean
     GrantedAuthoritiesMapper authoritiesMapper() {
         SimpleAuthorityMapper mapper = new SimpleAuthorityMapper();
-        mapper.setPrefix(AUTHORITY_PREFIX); // Spring Security adds a prefix to the authority/role names (we use the default here)
+        mapper.setPrefix(SecurityConstants.AUTHORITY_PREFIX); // Spring Security adds a prefix to the authority/role names (we use the default here)
         mapper.setConvertToUpperCase(true); // convert names to uppercase
-        mapper.setDefaultAuthority(AUTHORITY_PREFIX + "ANONYMOUS"); // set a default authority
+        mapper.setDefaultAuthority(SecurityConstants.AUTHORITY_PREFIX + "ANONYMOUS"); // set a default authority
         return mapper;
     }
 

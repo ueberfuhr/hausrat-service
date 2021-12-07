@@ -33,6 +33,7 @@ public class WebConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
 
+            @SuppressWarnings("SpringMVCViewInspection")
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/")
@@ -52,4 +53,5 @@ public class WebConfig {
             }
         };
     }
+
 }

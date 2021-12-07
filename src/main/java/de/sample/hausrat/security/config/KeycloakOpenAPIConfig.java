@@ -1,4 +1,4 @@
-package de.sample.hausrat.boundary.config;
+package de.sample.hausrat.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static de.sample.hausrat.boundary.config.SecurityConstants.SECURITY_PROFILE;
+import static de.sample.hausrat.security.config.SecurityConstants.SECURITY_PROFILE;
 import static java.util.List.of;
 
 @Configuration
