@@ -8,6 +8,7 @@ import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,6 +38,7 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
           .csrf().disable()
           .authorizeRequests()
           // we can set up authorization here alternatively to @Secured methods
+          .antMatchers(HttpMethod.OPTIONS).permitAll()
           .antMatchers("/api/**").authenticated()
           // force authentication for all requests (and use global method security)
           .anyRequest().permitAll();
@@ -71,7 +73,5 @@ class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         mapper.setDefaultAuthority(SecurityConstants.AUTHORITY_PREFIX + "ANONYMOUS"); // set a default authority
         return mapper;
     }
-
-
 
 }
