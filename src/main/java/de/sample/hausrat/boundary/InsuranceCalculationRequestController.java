@@ -1,12 +1,12 @@
 package de.sample.hausrat.boundary;
 
-import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.InsuranceCalculationRequestDto;
 import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationRequestDtoMapper;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationResultDtoMapper;
 import de.sample.hausrat.domain.InsuranceCalculationService;
 import de.sample.hausrat.domain.model.InsuranceCalculationResult;
+import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.net.URI;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -49,10 +49,11 @@ public class InsuranceCalculationRequestController {
       @ApiResponse(code = 200, message = "The calculation results were found and returned."),
     })
     // TODO we should use pagination here
-    public Collection<InsuranceCalculationResultDto> findAll() {
-        return service.findAll()
-          .map(resultMapper::map)
-          .collect(Collectors.toList());
+    public Flux<InsuranceCalculationResultDto> findAll() {
+        return Flux.fromStream(
+          service.findAll()
+            .map(resultMapper::map)
+        );
     }
 
     @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,10 +63,12 @@ public class InsuranceCalculationRequestController {
       @ApiResponse(code = 400, message = "The id is invalid."),
       @ApiResponse(code = 404, message = "A calculation with the given id could not be found."),
     })
-    public InsuranceCalculationResultDto findById(@PathVariable @PositiveOrZero long id) {
-        return service.findById(id)
-          .map(resultMapper::map)
-          .orElseThrow(NotFoundException::new);
+    public Mono<InsuranceCalculationResultDto> findById(@PathVariable @PositiveOrZero long id) {
+        return Mono.just(
+          service.findById(id)
+            .map(resultMapper::map)
+            .orElseThrow(NotFoundException::new)
+        );
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -75,11 +78,11 @@ public class InsuranceCalculationRequestController {
       @ApiResponse(code = 400, message = "The request is invalid."),
     })
     // TODO maybe we could implement this the reactive way?
-    public ResponseEntity<InsuranceCalculationResultDto> executeCalculation(
+    public Mono<ResponseEntity<InsuranceCalculationResultDto>> executeCalculation(
       @Valid @RequestBody InsuranceCalculationRequestDto request) {
         InsuranceCalculationResult result = service.process(requestMapper.map(request));
         URI location = linkTo(methodOn(InsuranceCalculationRequestController.class).findById(result.getId())).toUri();
-        return ResponseEntity.created(location).body(resultMapper.map(result));
+        return Mono.just(ResponseEntity.created(location).body(resultMapper.map(result)));
     }
 
 }
