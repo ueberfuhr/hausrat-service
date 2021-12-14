@@ -15,7 +15,7 @@ logging:
     root: INFO
     web: DEBUG
     org.springframework.web: DEBUG
-    de.ars.schulung: DEBUG
+    de.sample.hausrat: DEBUG
 
 management:
   endpoints:
