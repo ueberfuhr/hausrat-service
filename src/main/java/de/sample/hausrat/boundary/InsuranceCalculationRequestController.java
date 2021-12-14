@@ -5,7 +5,6 @@ import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationRequestDtoMapper;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationResultDtoMapper;
 import de.sample.hausrat.domain.InsuranceCalculationService;
-import de.sample.hausrat.domain.model.InsuranceCalculationResult;
 import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -50,10 +49,8 @@ public class InsuranceCalculationRequestController {
     })
     // TODO we should use pagination here
     public Flux<InsuranceCalculationResultDto> findAll() {
-        return Flux.fromStream(
-          service.findAll()
-            .map(resultMapper::map)
-        );
+        return service.findAll()
+          .map(resultMapper::map);
     }
 
     @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,11 +61,10 @@ public class InsuranceCalculationRequestController {
       @ApiResponse(code = 404, message = "A calculation with the given id could not be found."),
     })
     public Mono<InsuranceCalculationResultDto> findById(@PathVariable @PositiveOrZero long id) {
-        return Mono.just(
-          service.findById(id)
-            .map(resultMapper::map)
-            .orElseThrow(NotFoundException::new)
-        );
+        return service.findById(id)
+          .map(resultMapper::map)
+          .or(Mono.error(NotFoundException::new));
+
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -80,9 +76,12 @@ public class InsuranceCalculationRequestController {
     // TODO maybe we could implement this the reactive way?
     public Mono<ResponseEntity<InsuranceCalculationResultDto>> executeCalculation(
       @Valid @RequestBody InsuranceCalculationRequestDto request) {
-        InsuranceCalculationResult result = service.process(requestMapper.map(request));
-        URI location = linkTo(methodOn(InsuranceCalculationRequestController.class).findById(result.getId())).toUri();
-        return Mono.just(ResponseEntity.created(location).body(resultMapper.map(result)));
+        return service.process(requestMapper.map(request))
+          .map(resultMapper::map)
+          .map(result -> {
+              final URI location = linkTo(methodOn(InsuranceCalculationRequestController.class).findById(result.getId())).toUri();
+              return ResponseEntity.created(location).body(result);
+          });
     }
 
 }

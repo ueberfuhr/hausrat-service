@@ -9,11 +9,11 @@ import lombok.experimental.Delegate;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class InsuranceCalculationService {
     private final ObjectProvider<Authentication> authentication;
 
     @Transactional
-    public InsuranceCalculationResult process(
+    public Mono<InsuranceCalculationResult> process(
       @Valid InsuranceCalculationRequest request) {
         Price price = calculator.calculate(request);
         InsuranceCalculationResult result = new InsuranceCalculationResult();

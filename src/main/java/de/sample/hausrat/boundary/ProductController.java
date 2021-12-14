@@ -21,11 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -42,8 +43,9 @@ public class ProductController {
     @ApiResponses({
       @ApiResponse(code = 200, message = "The products were found and returned."),
     })
-    public Collection<ProductDto> getProducts() {
-        return productService.findAll().map(mapper::map).collect(Collectors.toList());
+    public Flux<ProductDto> getProducts() {
+        return productService.findAll()
+          .map(mapper::map);
     }
 
     @GetMapping(value = "{name}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,8 +55,10 @@ public class ProductController {
       @ApiResponse(code = 400, message = "The product name is not a single word containing uppercase letters and digits."),
       @ApiResponse(code = 404, message = "A product does not exist with the given name."),
     })
-    public ProductDto findByName(@PathVariable @ProductName String name) {
-        return productService.find(name).map(mapper::map).orElseThrow(NotFoundException::new);
+    public Mono<ProductDto> findByName(@PathVariable @ProductName String name) {
+        return productService.find(name)
+          .map(mapper::map)
+          .or(Mono.error(NotFoundException::new));
     }
 
     @PutMapping(value = "{name}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -64,11 +68,11 @@ public class ProductController {
       @ApiResponse(code = 400, message = "The product name is not a single word containing uppercase letters and digits, or the submitted product's name does not match the URL of the resource."),
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createProduct(@PathVariable @ProductName String name, @Valid @RequestBody ProductDto dto) {
+    public Mono<Void> createProduct(@PathVariable @ProductName String name, @Valid @RequestBody ProductDto dto) {
         if (!name.equals(dto.getName())) {
             throw new ValidationException("product name is not matching the resource's URL");
         }
-        productService.save(mapper.map(dto));
+        return productService.save(mapper.map(dto)).then();
     }
 
     @DeleteMapping("{name}")
@@ -78,8 +82,8 @@ public class ProductController {
       @ApiResponse(code = 400, message = "The product name is not a single word containing uppercase letters and digits."),
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable @ProductName String name) {
-        productService.delete(name);
+    public Mono<Void> deleteProduct(@PathVariable @ProductName String name) {
+        return productService.delete(name);
     }
 
 }

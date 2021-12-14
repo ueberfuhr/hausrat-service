@@ -3,23 +3,23 @@ package de.sample.hausrat.domain.repository;
 import de.sample.hausrat.domain.model.Product;
 import de.sample.hausrat.domain.model.ProductName;
 import org.springframework.validation.annotation.Validated;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Validated
 public interface ProductRepository {
 
-    long getCount();
+    Mono<Long> getCount();
 
-    Product save(@NotNull @Valid Product product);
+    Mono<Product> save(@NotNull @Valid Product product);
 
-    Stream<Product> findAll();
+    Flux<Product> findAll();
 
-    Optional<Product> find(@ProductName String name);
+    Mono<Product> find(@ProductName String name);
 
-    void delete(@ProductName String name);
+    Mono<Void> delete(@ProductName String name);
 
 }
