@@ -23,8 +23,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Mono<Product> save(Product product) {
-        return this.repo.save(this.mapper.map(product))
+    public Mono<Product> save(final Product product) {
+        // R2DBC is not able to detect whether the product still exists or not
+        return this.repo.findById(product.getName())
+          // if already existing, map the given product
+          .map(p -> this.mapper.map(product))
+          // else use R2DBC-specific implementation
+          .switchIfEmpty(Mono.just(this.mapper.map(product).setAsNew()))
+          .flatMap(this.repo::save)
           .map(this.mapper::map);
     }
 

@@ -28,11 +28,10 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration, org.keycloak.adapters.springboot.KeycloakAutoConfiguration, org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   # Datasource: H2 im lokalen Verzeichnis ".local-db" (von Versionierung ausgeschlossen)
-  datasource:
-    url: jdbc:h2:./.local-db/data
+  r2dbc:
+    url: r2dbc:h2:file:///./.local-db/data-rx
     username: app
     password: null
-    driverClassName: org.h2.Driver
   h2:
     console:
       enabled: true

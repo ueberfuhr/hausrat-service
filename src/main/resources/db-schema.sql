@@ -1,8 +1,8 @@
-CREATE TABLE product (
+CREATE TABLE IF NOT EXISTS product (
     name VARCHAR(255) PRIMARY KEY,
     price INT NOT NULL
 );
-CREATE TABLE insurancecalculation (
+CREATE TABLE IF NOT EXISTS insurancecalculation (
     id INT PRIMARY KEY auto_increment,
     product VARCHAR(255) NOT NULL,
     livingarea NUMERIC(18,2) NOT NULL,
