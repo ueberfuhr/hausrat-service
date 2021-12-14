@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the project
-      run: mvn clean test
+      run: mvn clean package
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag hausrat-service:$(date +%s)
