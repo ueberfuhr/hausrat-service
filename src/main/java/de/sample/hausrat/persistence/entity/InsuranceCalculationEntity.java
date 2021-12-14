@@ -2,6 +2,7 @@ package de.sample.hausrat.persistence.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@Table("insurancecalculation")
 public class InsuranceCalculationEntity {
 
     @Id

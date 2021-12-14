@@ -26,7 +26,7 @@
         <version.spock>2.0-M3-groovy-3.0</version.spock>
         <version.keycloak>15.0.2</version.keycloak>
         <version.groovy>3.0.8</version.groovy>
-        <version.h2.rx>0.9.0.M1</version.h2.rx>
+        <version.h2.rx>0.8.4.RELEASE</version.h2.rx> <!-- same version as R2DBC SPI included by Spring Boot Starter Dep.! -->
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
 
@@ -120,6 +120,12 @@
             <version>${version.groovy}</version>
             <scope>test</scope>
         </dependency>
+        <!-- Reactive Tests -->
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- Swagger UI -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -160,10 +166,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
+        <!-- H2 Driver only available in version -->
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
             <version>${version.h2.rx}</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- Authentication with with Keycloak -->
         <dependency>

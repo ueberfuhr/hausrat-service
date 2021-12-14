@@ -15,7 +15,7 @@ public class ProductService {
     @Delegate
     private final ProductRepository repo;
 
-    @PostConstruct
+    //@PostConstruct
     void initializeProducts() {
         if (this.repo.getCount().block() < 1) { // synchronous initialization
             this.save(new Product("COMPACT", 650));
