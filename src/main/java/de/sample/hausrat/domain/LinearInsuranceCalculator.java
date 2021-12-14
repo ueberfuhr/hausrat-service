@@ -2,11 +2,11 @@ package de.sample.hausrat.domain;
 
 import de.sample.hausrat.domain.model.InsuranceCalculationRequest;
 import de.sample.hausrat.domain.model.Price;
-import de.sample.hausrat.domain.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import reactor.core.publisher.Mono;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
@@ -34,11 +34,11 @@ public class LinearInsuranceCalculator implements InsuranceCalculator {
     }
 
     @Override
-    public Price calculate(InsuranceCalculationRequest req) {
-        Product product = service.find(req.getProduct())
-          .orElseThrow(() -> new ValidationException(
+    public Mono<Price> calculate(final InsuranceCalculationRequest req) {
+        return service.find(req.getProduct())
+          .map(product -> price(req.getLivingArea() * product.getPrice()))
+          .or(Mono.error(() -> new ValidationException(
             String.format("No product could be found with name \"%s\"!", req.getProduct())
-          ));
-        return price(req.getLivingArea() * product.getPrice());
+          )));
     }
 }

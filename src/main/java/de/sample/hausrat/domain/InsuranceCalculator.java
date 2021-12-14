@@ -2,6 +2,7 @@ package de.sample.hausrat.domain;
 
 import de.sample.hausrat.domain.model.InsuranceCalculationRequest;
 import de.sample.hausrat.domain.model.Price;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
@@ -19,6 +20,6 @@ public interface InsuranceCalculator {
      * @return the sum insured
      * @throws IllegalArgumentException, if the request is invalid or <tt>null</tt>
      */
-    Price calculate(@Valid InsuranceCalculationRequest request);
+    Mono<Price> calculate(@Valid InsuranceCalculationRequest request);
 
 }

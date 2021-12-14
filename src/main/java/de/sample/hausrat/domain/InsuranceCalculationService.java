@@ -27,17 +27,20 @@ public class InsuranceCalculationService {
     @Transactional
     public Mono<InsuranceCalculationResult> process(
       @Valid InsuranceCalculationRequest request) {
-        Price price = calculator.calculate(request);
-        InsuranceCalculationResult result = new InsuranceCalculationResult();
-        result.setRequest(request);
-        result.setTimestamp(LocalDateTime.now());
-        result.setValue(price.getValue());
-        result.setCurrency(price.getCurrency());
-        authentication.stream().findFirst()
-          .map(Authentication::getPrincipal)
-          .map(Object::toString)
-          .ifPresent(result::setPrincipal);
-        return this.save(result);
+        return calculator.calculate(request)
+          .map(price -> {
+              InsuranceCalculationResult result = new InsuranceCalculationResult();
+              result.setRequest(request);
+              result.setTimestamp(LocalDateTime.now());
+              result.setValue(price.getValue());
+              result.setCurrency(price.getCurrency());
+              authentication.stream().findFirst()
+                .map(Authentication::getPrincipal)
+                .map(Object::toString)
+                .ifPresent(result::setPrincipal);
+              return result;
+          })
+          .flatMap(this::save);
     }
 
 }

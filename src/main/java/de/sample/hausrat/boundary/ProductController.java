@@ -1,10 +1,10 @@
 package de.sample.hausrat.boundary;
 
-import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.ProductDto;
 import de.sample.hausrat.boundary.model.mappers.ProductDtoMapper;
 import de.sample.hausrat.domain.ProductService;
 import de.sample.hausrat.domain.model.ProductName;
+import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
-import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -58,7 +57,7 @@ public class ProductController {
     public Mono<ProductDto> findByName(@PathVariable @ProductName String name) {
         return productService.find(name)
           .map(mapper::map)
-          .or(Mono.error(NotFoundException::new));
+          .switchIfEmpty(Mono.error(NotFoundException::new));
     }
 
     @PutMapping(value = "{name}", consumes = MediaType.APPLICATION_JSON_VALUE)

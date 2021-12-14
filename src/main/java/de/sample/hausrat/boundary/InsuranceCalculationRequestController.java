@@ -63,8 +63,7 @@ public class InsuranceCalculationRequestController {
     public Mono<InsuranceCalculationResultDto> findById(@PathVariable @PositiveOrZero long id) {
         return service.findById(id)
           .map(resultMapper::map)
-          .or(Mono.error(NotFoundException::new));
-
+          .switchIfEmpty(Mono.error(NotFoundException::new));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
