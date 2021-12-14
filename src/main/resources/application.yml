@@ -14,8 +14,8 @@ logging:
   level:
     root: INFO
     web: DEBUG
-    org.springframework: DEBUG
-    de.ars.schulung: DEBUG
+    org.springframework.web: DEBUG
+    de.sample.hausrat: DEBUG
 
 management:
   endpoints:
@@ -29,7 +29,7 @@ spring:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration, org.keycloak.adapters.springboot.KeycloakAutoConfiguration, org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   # Datasource: H2 im lokalen Verzeichnis ".local-db" (von Versionierung ausgeschlossen)
   datasource:
-    url: r2dbc:h2:./.local-db/data-rx
+    url: jdbc:h2:./.local-db/data
     username: app
     password: null
     driverClassName: org.h2.Driver
