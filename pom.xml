@@ -103,6 +103,19 @@
             <version>${version.cucumber}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>pl.rzrz</groupId>
+            <artifactId>assertj-reactor</artifactId>
+            <version>1.0.8</version>
+            <scope>test</scope>
+            <exclusions>
+                <!-- This library should not decide which reactor version to use -->
+                <exclusion>
+                    <groupId>io.projectreactor</groupId>
+                    <artifactId>reactor-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- Spock and Groovy -->
         <dependency>
             <groupId>org.spockframework</groupId>
@@ -118,12 +131,6 @@
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>${version.groovy}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Reactive Tests -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- Swagger UI -->

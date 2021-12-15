@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static pl.rzrz.assertj.reactor.Assertions.assertThat;
 
-@WebFluxTest(controllers=ProductController.class)
+@WebFluxTest(controllers = ProductController.class)
 class ProductControllerTest {
 
     @Autowired
@@ -30,10 +30,10 @@ class ProductControllerTest {
     void testEmptyProducts() {
         // given
         when(service.findAll()).thenReturn(Flux.empty());
-        // when~then
-        StepVerifier.create(controller.getProducts())
-          .expectComplete()
-          .verify();
+        // when
+        var result = controller.getProducts();
+        // then
+        assertThat(result).emitsCount(0);
         verifyNoInteractions(mapper);
     }
 
@@ -45,11 +45,10 @@ class ProductControllerTest {
         var productDto = new ProductDto();
         when(service.findAll()).thenReturn(Flux.just(product));
         when(mapper.map(product)).thenReturn(productDto);
-        // when~then
-        StepVerifier.create(controller.getProducts())
-          .expectNext(productDto)
-          .expectComplete()
-          .verify();
+        // when
+        var result = controller.getProducts();
+        // then
+        assertThat(result).emits(productDto);
     }
 
 }

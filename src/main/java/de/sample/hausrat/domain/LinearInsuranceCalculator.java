@@ -37,7 +37,7 @@ public class LinearInsuranceCalculator implements InsuranceCalculator {
     public Mono<Price> calculate(final InsuranceCalculationRequest req) {
         return service.find(req.getProduct())
           .map(product -> price(req.getLivingArea() * product.getPrice()))
-          .or(Mono.error(() -> new ValidationException(
+          .switchIfEmpty(Mono.error(() -> new ValidationException(
             String.format("No product could be found with name \"%s\"!", req.getProduct())
           )));
     }
