@@ -71,9 +71,9 @@ Then, invoking the API requires authentication and uses a role-based authorizati
 
  - Spring Security with Keycloak (see [separate instructions](security/README.md))
  - Global Method Security is configured that allows to use annotation based authorization.
-   - see [Configuration](src/main/java/de/sample/hausrat/security/config/KeycloakWebSecurityConfig.java)
+   - see [Configuration](src/main/java/de/sample/hausrat/config/security/KeycloakWebSecurityConfig.java)
    - see [Sample Controller](src/main/java/de/sample/hausrat/boundary/ProductController.java)
  - OpenAPI contains extended descriptions to describe secured operations (🔒 symbol and the allowed roles)
-   - see [OpenAPI Extension](src/main/java/de/sample/hausrat/security/config/KeycloakOpenAPIConfig.java)
+   - see [OpenAPI Extension](src/main/java/de/sample/hausrat/config/security/KeycloakOpenAPIConfig.java)
  - Because SpringFox 3.0.0 includes an older version of Swagger UI (`3.26.0`), that does not support OpenID Connect Discovery (`3.38.0+`), we overwrite the bundled Swagger UI by a newer version (`4.1.2`)
    - see the [Swagger UI Files](src/main/resources/META-INF/resources/webjars/springfox-swagger-ui)

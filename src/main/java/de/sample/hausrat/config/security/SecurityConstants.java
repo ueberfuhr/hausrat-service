@@ -1,4 +1,4 @@
-package de.sample.hausrat.security.config;
+package de.sample.hausrat.config.security;
 
 import lombok.AccessLevel;
 import lombok.Getter;

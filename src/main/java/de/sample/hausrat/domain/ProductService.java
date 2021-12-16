@@ -1,5 +1,7 @@
 package de.sample.hausrat.domain;
 
+import de.sample.hausrat.config.exceptions.Throw;
+import de.sample.hausrat.domain.exceptions.ThrowServiceException;
 import de.sample.hausrat.domain.model.Product;
 import de.sample.hausrat.domain.repository.InternalProductRepository;
 import de.sample.hausrat.domain.repository.ProductRepository;
@@ -11,6 +13,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
+@Throw
+@ThrowServiceException
 public class ProductService {
 
     @Delegate(excludes = InternalProductRepository.class)

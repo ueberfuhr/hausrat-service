@@ -1,4 +1,4 @@
-package de.sample.hausrat.security.config;
+package de.sample.hausrat.config.security;
 
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
@@ -18,11 +18,9 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-import static de.sample.hausrat.security.config.SecurityConstants.SECURITY_PROFILE;
-
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured(...)
-@Profile(SECURITY_PROFILE)
+@Profile(SecurityConstants.SECURITY_PROFILE)
 class KeycloakWebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Override
