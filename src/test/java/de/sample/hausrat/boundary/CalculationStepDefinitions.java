@@ -12,7 +12,6 @@ import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.data.r2dbc.AutoConfigureDataR2dbc;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -60,14 +59,15 @@ public class CalculationStepDefinitions {
     @Given("we have a product named {string} with a single price of {int} {string}")
     public void let_product_exist(String name, int price, String currencyCode) {
         assertThat(currencyCode).isEqualTo(this.currencyCode);
-        productService.save(new Product(name, price));
+        productService.save(new Product(name, price)).block();
     }
 
     @Given("we don't have any product named {string}")
     public void let_product_not_exist(String name) {
         productService.find(name)
           .map(Product::getName)
-          .ifPresent(productService::delete);
+          .map(productService::delete)
+          .block();
     }
 
     @When("the product is {string}")
