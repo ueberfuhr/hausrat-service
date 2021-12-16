@@ -51,13 +51,29 @@ The project is built based on the idea of [Hexagonal Architectures](https://www.
  - boundary (the REST service implementation that allows access to the domain)
  - persistence (the implementation of the repositories defined by the domain using Spring Data JPA)
 
-## Particularities
- - We can optionally run the service with a `secure` profile.
-   - Spring Security with Keycloak (see [separate instructions](security/README.md))
-   - Global Method Security is configured that allows to use annotation based authorization.
-     - see [Konfiguration](src/main/java/de/sample/hausrat/boundary/config/KeycloakWebSecurityConfig.java)
-     - see [Sample Controller](src/main/java/de/sample/hausrat/boundary/ProductController.java)
-   - OpenAPI contains extended descriptions to describe secured operations (🔒 symbol and the allowed roles)
-     - see [OpenAPI Extension](src/main/java/de/sample/hausrat/boundary/config/KeycloakOpenAPIConfig.java)
-   - Because SpringFox 3.0.0 includes an older version of Swagger UI (`3.26.0`), that does not support OpenID Connect Discovery (`3.38.0+`), we overwrite the bundled Swagger UI by a newer version (`4.1.2`)
-     - see the [Swagger UI Files](src/main/resources/META-INF/resources/webjars/springfox-swagger-ui)
+## Reactive Stack
+
+The API is implemented with synchronous calls, the API calls are executed within the default _one-thread-per-request_-ThreadModel. All invocations are synchronous.
+
+Additionally, we have also a reactive stack implementation (in the `reactive` branch) using
+ - Spring WebFlux
+ - Spring Data R2DBC
+
+## Security
+
+The service runs by default without any security constrains, but we can optionally start it with the `secure` profile.
+Then, invoking the API requires authentication and uses a role-based authorization:
+
+ - Role `customer` is allowed to read and create insurance calculations
+ - Role `agent` is allowed to create, modify and delete products
+
+### Implementation Hints
+
+ - Spring Security with Keycloak (see [separate instructions](security/README.md))
+ - Global Method Security is configured that allows to use annotation based authorization.
+   - see [Configuration](src/main/java/de/sample/hausrat/security/config/KeycloakWebSecurityConfig.java)
+   - see [Sample Controller](src/main/java/de/sample/hausrat/boundary/ProductController.java)
+ - OpenAPI contains extended descriptions to describe secured operations (🔒 symbol and the allowed roles)
+   - see [OpenAPI Extension](src/main/java/de/sample/hausrat/security/config/KeycloakOpenAPIConfig.java)
+ - Because SpringFox 3.0.0 includes an older version of Swagger UI (`3.26.0`), that does not support OpenID Connect Discovery (`3.38.0+`), we overwrite the bundled Swagger UI by a newer version (`4.1.2`)
+   - see the [Swagger UI Files](src/main/resources/META-INF/resources/webjars/springfox-swagger-ui)

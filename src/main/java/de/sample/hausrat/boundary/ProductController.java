@@ -1,10 +1,10 @@
 package de.sample.hausrat.boundary;
 
-import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.ProductDto;
 import de.sample.hausrat.boundary.model.mappers.ProductDtoMapper;
 import de.sample.hausrat.domain.ProductService;
 import de.sample.hausrat.domain.model.ProductName;
+import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -54,7 +54,9 @@ public class ProductController {
       @ApiResponse(code = 404, message = "A product does not exist with the given name."),
     })
     public ProductDto findByName(@PathVariable @ProductName String name) {
-        return productService.find(name).map(mapper::map).orElseThrow(NotFoundException::new);
+        return productService.find(name)
+          .map(mapper::map)
+          .orElseThrow(NotFoundException::new);
     }
 
     @PutMapping(value = "{name}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -79,7 +81,11 @@ public class ProductController {
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable @ProductName String name) {
-        productService.delete(name);
+        productService.delete(
+          productService.find(name)
+            .orElseThrow(NotFoundException::new)
+            .getName()
+        );
     }
 
 }
