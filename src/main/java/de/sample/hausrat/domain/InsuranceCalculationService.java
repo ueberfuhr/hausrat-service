@@ -1,5 +1,7 @@
 package de.sample.hausrat.domain;
 
+import de.sample.hausrat.config.exceptions.Throw;
+import de.sample.hausrat.domain.exceptions.ThrowServiceException;
 import de.sample.hausrat.domain.model.InsuranceCalculationRequest;
 import de.sample.hausrat.domain.model.InsuranceCalculationResult;
 import de.sample.hausrat.domain.model.Price;
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Throw
+@ThrowServiceException
 public class InsuranceCalculationService {
 
     private final InsuranceCalculator calculator;

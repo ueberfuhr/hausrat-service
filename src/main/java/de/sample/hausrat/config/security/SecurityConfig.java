@@ -1,4 +1,4 @@
-package de.sample.hausrat.security.config;
+package de.sample.hausrat.config.security;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;

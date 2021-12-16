@@ -1,4 +1,4 @@
-package de.sample.hausrat.security.config;
+package de.sample.hausrat.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +25,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static de.sample.hausrat.security.config.SecurityConstants.SECURITY_PROFILE;
 import static java.util.List.of;
 
 @Configuration
-@Profile(SECURITY_PROFILE)
+@Profile(SecurityConstants.SECURITY_PROFILE)
 public class KeycloakOpenAPIConfig {
 
     @Value("${keycloak.auth-server-url}")

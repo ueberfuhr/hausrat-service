@@ -1,6 +1,9 @@
 package de.sample.hausrat.domain;
 
+import de.sample.hausrat.config.exceptions.Throw;
+import de.sample.hausrat.domain.exceptions.ThrowServiceException;
 import de.sample.hausrat.domain.model.Product;
+import de.sample.hausrat.domain.repository.InternalProductRepository;
 import de.sample.hausrat.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
@@ -10,17 +13,20 @@ import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
+@Throw
+@ThrowServiceException
 public class ProductService {
 
-    @Delegate
+    @Delegate(excludes = InternalProductRepository.class)
     private final ProductRepository repo;
 
     @PostConstruct
     void initializeProducts() {
-        if (this.repo.getCount().block() < 1) { // synchronous initialization
-            this.save(new Product("COMPACT", 650)).block();
-            this.save(new Product("OPTIMAL", 700)).block();
-        }
+        // TODO
+        this.repo.initialize(
+          new Product("COMPACT", 650),
+          new Product("OPTIMAL", 700)
+        );
     }
 
 }

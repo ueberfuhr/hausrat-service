@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.stream.Stream;
+
 @Service
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
@@ -46,7 +48,23 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Mono<Void> delete(String name) {
+    public Mono<Boolean> delete(String name) {
         return this.repo.deleteById(name);
+// TODO
+        if (this.repo.existsById(name)) {
+            this.repo.deleteById(name);
+            return true;
+        } else {
+            return false;
+        }
+
     }
+
+    @Override // TODO
+    public void initialize(Stream<Product> initialProducts) {
+        if (this.repo.count() < 1) {
+            initialProducts.forEach(this::save);
+        }
+    }
+
 }

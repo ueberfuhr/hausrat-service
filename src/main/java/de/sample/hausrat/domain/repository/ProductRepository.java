@@ -20,6 +20,6 @@ public interface ProductRepository {
 
     Mono<Product> find(@ProductName String name);
 
-    Mono<Void> delete(@ProductName String name);
+    Mono<Boolean> delete(@ProductName String name);
 
 }

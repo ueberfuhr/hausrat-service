@@ -1,11 +1,12 @@
 package de.sample.hausrat.boundary;
 
+import de.sample.hausrat.config.security.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.InsuranceCalculationRequestDto;
 import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationRequestDtoMapper;
 import de.sample.hausrat.boundary.model.mappers.InsuranceCalculationResultDtoMapper;
 import de.sample.hausrat.domain.InsuranceCalculationService;
-import de.sample.hausrat.security.config.SecurityConstants.Authorities;
+import de.sample.hausrat.domain.model.InsuranceCalculationResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

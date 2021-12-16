@@ -18,31 +18,41 @@
     <name>Hausrat Microservice</name>
 
     <properties>
+        <!-- Inherited Properties -->
         <java.version>11</java.version>
+        <junit-jupiter.version>5.8.0</junit-jupiter.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <!-- Custom Properties -->
         <spring-fox.version>3.0.0</spring-fox.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <version.jacoco>0.8.7</version.jacoco>
-        <version.cucumber>7.1.0</version.cucumber>
-        <version.spock>2.0-M3-groovy-3.0</version.spock>
-        <version.keycloak>15.0.2</version.keycloak>
-        <version.groovy>3.0.8</version.groovy>
-        <version.h2.rx>0.8.4.RELEASE</version.h2.rx> <!-- same version as R2DBC SPI included by Spring Boot Starter Dep.! -->
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <jacoco.version>0.8.7</jacoco.version>
+        <cucumber.version>7.1.0</cucumber.version>
+        <spock.version>2.0-M3-groovy-3.0</spock.version>
+        <keycloak.version>15.0.2</keycloak.version>
+        <groovy.version>3.0.8</groovy.version>
+        <h2.r2dbc.version>0.8.4.RELEASE</h2.r2dbc.version> <!-- same version as R2DBC SPI included by Spring Boot Starter Dep.! -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${cucumber.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.spockframework</groupId>
                 <artifactId>spock-bom</artifactId>
-                <version>${version.spock}</version>
+                <version>${spock.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.keycloak.bom</groupId>
                 <artifactId>keycloak-adapter-bom</artifactId>
-                <version>${version.keycloak}</version>
+                <version>${keycloak.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -80,27 +90,23 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>${version.cucumber}</version>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>${version.cucumber}</version>
+            <artifactId>cucumber-java</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>${version.cucumber}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
-            <version>${version.cucumber}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -130,7 +136,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>${version.groovy}</version>
+            <version>${groovy.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- Swagger UI -->
@@ -177,7 +183,7 @@
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
-            <version>${version.h2.rx}</version>
+            <version>${h2.r2dbc.version}</version>
             <scope>runtime</scope>
         </dependency>
         <!-- Authentication with with Keycloak -->
@@ -189,6 +195,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!-- Aspects -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
     </dependencies>
 
@@ -212,6 +223,17 @@
                                 <version>${mapstruct.version}</version>
                             </path>
                         </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <properties>
+                            <configurationParameters>
+                                cucumber.junit-platform.naming-strategy=long
+                            </configurationParameters>
+                        </properties>
                     </configuration>
                 </plugin>
             </plugins>
@@ -246,7 +268,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${version.jacoco}</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -270,7 +292,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${version.jacoco}</version>
+                <version>${jacoco.version}</version>
             </plugin>
         </plugins>
     </reporting>

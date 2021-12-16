@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.sample.hausrat.InsuranceApplication;
 import de.sample.hausrat.boundary.model.InsuranceCalculationRequestDto;
 import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
+import de.sample.hausrat.domain.ProductService;
+import de.sample.hausrat.domain.model.Product;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -40,8 +42,12 @@ public class CalculationStepDefinitions {
     MockMvc mvc; // testing by sending HTTP requests and verifying HTTP responses
     @Autowired
     ObjectMapper mapper; // used to render or parse JSON
+    @Autowired
+    ProductService productService;
     @Value("${calculation.currency.precision:2}")
     private int currencyPrecision;
+    @Value("${calculation.currency.code:EUR}")
+    private String currencyCode;
 
     private String product;
     private double livingArea;
@@ -51,7 +57,20 @@ public class CalculationStepDefinitions {
         // nothing to do here - we currently do not support further calculations
     }
 
-    @When("the product is \\\"([^\\\"]*)\\\"$")
+    @Given("we have a product named {string} with a single price of {int} {string}")
+    public void let_product_exist(String name, int price, String currencyCode) {
+        assertThat(currencyCode).isEqualTo(this.currencyCode);
+        productService.save(new Product(name, price));
+    }
+
+    @Given("we don't have any product named {string}")
+    public void let_product_not_exist(String name) {
+        productService.find(name)
+          .map(Product::getName)
+          .ifPresent(productService::delete);
+    }
+
+    @When("the product is {string}")
     public void the_product_is(String product) {
         this.product = product;
     }
@@ -66,36 +85,37 @@ public class CalculationStepDefinitions {
         dto.setProduct(this.product);
         dto.setLivingArea(this.livingArea);
         return mvc
-                .perform(
-                        post("/api/v1/calculations")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(dto))
-                );
+          .perform(
+            post("/api/v1/calculations")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(mapper.writeValueAsString(dto))
+          );
     }
 
     private InsuranceCalculationResultDto executeCalculationSuccessful() throws Exception {
         String body = executeCalculation()
-                .andExpect(status().isCreated())
-                .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andReturn().getResponse().getContentAsString();
+          .andExpect(status().isCreated())
+          .andExpect(header().exists(HttpHeaders.LOCATION))
+          .andReturn().getResponse().getContentAsString();
         return mapper.readValue(body, InsuranceCalculationResultDto.class);
     }
 
     @Then("the sum insured is {float} {string}")
     public void the_sum_insured_is(double value, String currencyCode) throws Exception {
+        assertThat(currencyCode).isEqualTo(this.currencyCode);
         InsuranceCalculationResultDto result = executeCalculationSuccessful();
         BigDecimal expectedValue = BigDecimal.valueOf(value)
-                .setScale(this.currencyPrecision, RoundingMode.HALF_UP);
+          .setScale(this.currencyPrecision, RoundingMode.HALF_UP);
         assertAll(
-                () -> assertThat(result.getValue()).isEqualTo(expectedValue),
-                () -> assertThat(result.getCurrency()).isEqualTo(currencyCode)
+          () -> assertThat(result.getValue()).isEqualTo(expectedValue),
+          () -> assertThat(result.getCurrency()).isEqualTo(currencyCode)
         );
     }
 
     @Then("the validation will fail")
     public void the_validation_will_fail() throws Exception {
         executeCalculation()
-                .andExpect(status().isBadRequest());
+          .andExpect(status().isBadRequest());
     }
 
 }
