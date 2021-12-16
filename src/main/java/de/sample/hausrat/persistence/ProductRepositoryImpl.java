@@ -42,4 +42,15 @@ public class ProductRepositoryImpl implements ProductRepository {
     public void delete(String name) {
         this.repo.deleteById(name);
     }
+
+    private void initializeSingle(Product initialProduct) {
+        if(this.find(initialProduct.getName()).isEmpty()) {
+            this.save(initialProduct);
+        }
+    }
+
+    @Override
+    public void initialize(Stream<Product> initialProducts) {
+        initialProducts.forEach(this::initializeSingle);
+    }
 }

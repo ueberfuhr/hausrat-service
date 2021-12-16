@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Validated
-public interface ProductRepository {
+public interface ProductRepository extends InternalProductRepository {
 
     long getCount();
 

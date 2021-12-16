@@ -1,6 +1,7 @@
 package de.sample.hausrat.domain;
 
 import de.sample.hausrat.domain.model.Product;
+import de.sample.hausrat.domain.repository.InternalProductRepository;
 import de.sample.hausrat.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
@@ -12,15 +13,15 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class ProductService {
 
-    @Delegate
+    @Delegate(excludes = InternalProductRepository.class)
     private final ProductRepository repo;
 
     @PostConstruct
     void initializeProducts() {
-        if (this.repo.getCount() < 1) {
-            this.save(new Product("COMPACT", 650));
-            this.save(new Product("OPTIMAL", 700));
-        }
+        this.repo.initialize(
+          new Product("COMPACT", 650),
+          new Product("OPTIMAL", 700)
+        );
     }
 
 }
