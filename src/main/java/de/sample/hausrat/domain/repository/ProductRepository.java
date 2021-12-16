@@ -20,6 +20,6 @@ public interface ProductRepository extends InternalProductRepository {
 
     Optional<Product> find(@ProductName String name);
 
-    void delete(@ProductName String name);
+    boolean delete(@ProductName String name);
 
 }

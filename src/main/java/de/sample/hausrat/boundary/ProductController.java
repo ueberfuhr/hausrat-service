@@ -81,11 +81,8 @@ public class ProductController {
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable @ProductName String name) {
-        productService.delete(
-          productService.find(name)
-            .orElseThrow(NotFoundException::new)
-            .getName()
-        );
+        if (!productService.delete(name)) {
+            throw new NotFoundException();
+        }
     }
-
 }

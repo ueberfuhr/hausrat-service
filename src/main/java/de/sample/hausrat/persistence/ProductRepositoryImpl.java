@@ -39,18 +39,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void delete(String name) {
-        this.repo.deleteById(name);
-    }
-
-    private void initializeSingle(Product initialProduct) {
-        if(this.find(initialProduct.getName()).isEmpty()) {
-            this.save(initialProduct);
+    public boolean delete(String name) {
+        if (this.repo.existsById(name)) {
+            this.repo.deleteById(name);
+            return true;
+        } else {
+            return false;
         }
     }
 
     @Override
     public void initialize(Stream<Product> initialProducts) {
-        initialProducts.forEach(this::initializeSingle);
+        if (this.repo.count() < 1) {
+            initialProducts.forEach(this::save);
+        }
     }
 }
