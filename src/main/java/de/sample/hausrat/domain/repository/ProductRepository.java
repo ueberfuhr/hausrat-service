@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Validated
-public interface ProductRepository {
+public interface ProductRepository extends InternalProductRepository {
 
     Mono<Long> getCount();
 

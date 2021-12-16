@@ -49,22 +49,20 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Mono<Boolean> delete(String name) {
-        return this.repo.deleteById(name);
-// TODO
-        if (this.repo.existsById(name)) {
-            this.repo.deleteById(name);
-            return true;
-        } else {
-            return false;
-        }
-
+        return this.repo.existsById(name)
+          .filter(result -> result)
+          .then(this.repo.deleteById(name))
+          .then(Mono.just(true))
+          .switchIfEmpty(Mono.just(false));
     }
 
-    @Override // TODO
-    public void initialize(Stream<Product> initialProducts) {
-        if (this.repo.count() < 1) {
-            initialProducts.forEach(this::save);
-        }
+    @Override
+    public Flux<Product> initialize(Stream<Product> initialProducts) {
+        return this.repo.count()
+          .filter(value -> value < 1)
+          .flatMapMany(value ->
+            Flux.fromStream(initialProducts)
+          ).flatMap(this::save);
     }
 
 }

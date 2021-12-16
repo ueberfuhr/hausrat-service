@@ -1,11 +1,10 @@
 package de.sample.hausrat.boundary;
 
-import de.sample.hausrat.security.config.SecurityConstants.Authorities;
 import de.sample.hausrat.boundary.model.ProductDto;
 import de.sample.hausrat.boundary.model.mappers.ProductDtoMapper;
+import de.sample.hausrat.config.security.SecurityConstants.Authorities;
 import de.sample.hausrat.domain.ProductService;
 import de.sample.hausrat.domain.model.ProductName;
-import de.sample.hausrat.config.security.SecurityConstants.Authorities;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -83,12 +82,10 @@ public class ProductController {
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteProduct(@PathVariable @ProductName String name) {
-        return productService.delete(name);
-// TODO
-        if (!productService.delete(name)) {
-            throw new NotFoundException();
-        }
-
+        return productService.delete(name)
+          .filter(result -> result)
+          .switchIfEmpty(Mono.error(NotFoundException::new))
+          .then();
     }
 
 }
