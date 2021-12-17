@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 @AutoConfigureTestDatabase
 class ProductServiceWithMockedRepositoryTest {
 
-    @MockBean(answer = Answers.CALLS_REAL_METHODS)
+    @MockBean(answer = Answers.RETURNS_MOCKS)
     ProductRepository repo;
     @Autowired
     ProductService service;
