@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -20,7 +20,6 @@ import java.util.Optional;
 public class WrappedExceptionAspect {
 
     @Around("@within(Throw) || @annotation(Throw)")
-    //@Around("execution(* de.sample.hausrat.domain.ProductService.*(..))")
     public Object wrapException(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             var result = joinPoint.proceed();
@@ -39,7 +38,7 @@ public class WrappedExceptionAspect {
     }
 
     private Throwable mapException(ProceedingJoinPoint joinPoint, Throwable e) {
-        var annotation = findAnnotation(joinPoint.getSignature(), WrappedException.class).orElse(null);
+        var annotation = findAnnotation(joinPoint.getSignature()).orElse(null);
         if (null != annotation
           &&
           // include must be empty or exception must be included
@@ -60,18 +59,21 @@ public class WrappedExceptionAspect {
         return e;
     }
 
-    private static <T extends Annotation> Optional<T> findAnnotation(AnnotatedElement element, Class<T> annotationType) {
-        return Optional.ofNullable(AnnotationUtils.findAnnotation(element, annotationType));
+    private static Optional<WrappedException> findAnnotation(AnnotatedElement element) {
+        return Optional.ofNullable(AnnotationUtils.findAnnotation(element, WrappedException.class));
     }
 
-    private static <T extends Annotation> Optional<T> findAnnotation(Signature signature, Class<T> annotationType) {
-        if (signature instanceof MethodSignature) {
-            var method = ((MethodSignature) signature).getMethod();
-            return findAnnotation(method, annotationType)
-              .or(() -> findAnnotation(method.getDeclaringClass(), annotationType));
-        } else {
-            return Optional.empty();
-        }
+    private static Optional<WrappedException> findAnnotationForMethod(Method method) {
+        return findAnnotation(method)
+          .or(() -> findAnnotation(method.getDeclaringClass()));
+    }
+
+    private static Optional<WrappedException> findAnnotation(Signature signature) {
+        return Optional.of(signature)
+          .filter(MethodSignature.class::isInstance)
+          .map(MethodSignature.class::cast)
+          .map(MethodSignature::getMethod)
+          .flatMap(WrappedExceptionAspect::findAnnotationForMethod);
     }
 
     private static <T> Optional<Class<? extends T>> findClassForInstance(Object o, Class<? extends T>[] classes) {
