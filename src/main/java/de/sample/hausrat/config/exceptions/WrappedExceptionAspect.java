@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -21,23 +23,41 @@ public class WrappedExceptionAspect {
     //@Around("execution(* de.sample.hausrat.domain.ProductService.*(..))")
     public Object wrapException(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            return joinPoint.proceed();
-        } catch (Exception e) {
-            var annotation = findAnnotation(joinPoint.getSignature(), WrappedException.class)
-              .orElseThrow(() -> e);
-            if (
-                // include must be empty or exception must be included
-              (
-                annotation.include().length < 1 || findClassForInstance(e, annotation.include()).isPresent()
-              )
-                &&
-                // exception must not be excluded
-                findClassForInstance(e, annotation.exclude()).isEmpty()
-            ) {
-                throw annotation.wrapper().getDeclaredConstructor().newInstance().apply(e);
+            var result = joinPoint.proceed();
+            // Flux and Mono both support onErrorMap, but declare it on their own
+            if (result instanceof Flux) {
+                Flux<?> p = (Flux<?>) result;
+                result = p.onErrorMap(e -> this.mapException(joinPoint, e));
+            } else if (result instanceof Mono) {
+                Mono<?> m = (Mono<?>) result;
+                result = m.onErrorMap(e -> this.mapException(joinPoint, e));
             }
-            throw e;
+            return result;
+        } catch (Exception e) {
+            throw mapException(joinPoint, e);
         }
+    }
+
+    private Throwable mapException(ProceedingJoinPoint joinPoint, Throwable e) {
+        var annotation = findAnnotation(joinPoint.getSignature(), WrappedException.class).orElse(null);
+        if (null != annotation
+          &&
+          // include must be empty or exception must be included
+          (
+            annotation.include().length < 1 || findClassForInstance(e, annotation.include()).isPresent()
+          )
+          &&
+          // exception must not be excluded
+          findClassForInstance(e, annotation.exclude()).isEmpty()
+        ) {
+            try {
+                return annotation.wrapper().getDeclaredConstructor().newInstance().apply(e);
+            } catch (Exception ex) {
+                ex.addSuppressed(e);
+                return ex;
+            }
+        }
+        return e;
     }
 
     private static <T extends Annotation> Optional<T> findAnnotation(AnnotatedElement element, Class<T> annotationType) {

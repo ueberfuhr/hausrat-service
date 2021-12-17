@@ -51,8 +51,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Mono<Boolean> delete(String name) {
         return this.repo.existsById(name)
           .filter(result -> result)
-          .then(this.repo.deleteById(name))
-          .then(Mono.just(true))
+          .flatMap(value -> this.repo.deleteById(name).then(Mono.just(true)))
           .switchIfEmpty(Mono.just(false));
     }
 

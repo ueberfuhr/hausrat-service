@@ -1,0 +1,4 @@
+# 'application-default' is a quick'n'dirty shortcut that does not require to explicitly activate a test profile
+spring:
+  r2dbc:
+    url: r2dbc:h2:mem:///./.local-db/data-rx
