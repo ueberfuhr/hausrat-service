@@ -1,4 +1,4 @@
-package de.sample.hausrat.persistence;
+package de.sample.hausrat.persistence.config;
 
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +10,12 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 @Configuration
 public class DatabaseConfiguration {
 
-    @Bean
-    ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
+    @Bean()
+    ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory, final DatabasePopulatorFactory factory) {
         ConnectionFactoryInitializer result = new ConnectionFactoryInitializer();
         result.setConnectionFactory(connectionFactory);
-        result.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("db-schema.sql")));
+        var origin = new ResourceDatabasePopulator(new ClassPathResource("db-schema.sql"));
+        result.setDatabasePopulator(factory.eventPublishing(origin));
         return result;
     }
 

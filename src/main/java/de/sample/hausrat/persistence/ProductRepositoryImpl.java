@@ -2,19 +2,27 @@ package de.sample.hausrat.persistence;
 
 import de.sample.hausrat.domain.model.Product;
 import de.sample.hausrat.domain.repository.ProductRepository;
+import de.sample.hausrat.persistence.config.DatabasePopulatedEvent;
 import de.sample.hausrat.persistence.mappers.ProductEntityMapper;
 import de.sample.hausrat.persistence.repository.ProductR2dbcRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 
+import java.time.Duration;
 import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepository {
+
+public class ProductRepositoryImpl implements ProductRepository, ApplicationListener<DatabasePopulatedEvent> {
 
     private final ProductR2dbcRepository repo;
     private final ProductEntityMapper mapper;
@@ -64,4 +72,33 @@ public class ProductRepositoryImpl implements ProductRepository {
           ).flatMap(this::save);
     }
 
+    @Override
+    public void onApplicationEvent(DatabasePopulatedEvent event) {
+        Mono<Object> objectMono = Mono.create(sink -> {
+            sink.success();
+        });
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Mono.create(sink -> {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sink.success("test1");
+        }).log(Loggers.getLogger("test1")).subscribeOn(Schedulers.boundedElastic()).subscribe(System.out::println);
+        Mono.just("test2").log(Loggers.getLogger("test2")).subscribe(System.out::println);
+        Mono.defer(() -> Mono.just("test3")).log(Loggers.getLogger("test3")).subscribe(System.out::println);
+
+        // Start a cold Publisher which emits 0,1,2 every sec.
+        ConnectableFlux<Long> flux =  Flux.interval(Duration.ofSeconds(1)).publish();
+        flux.connect();
+        // Let's subscribe to that with multiple subscribers.
+        flux.subscribe(i -> System.out.println("first_subscriber received value:" + i));
+        Thread.sleep(3_000);
+        // Let a second subscriber come after some time 3 secs here.
+        flux.subscribe(i -> System.out.println("second_subscriber received value:" + i));
+        Thread.sleep(10_000);
+    }
 }

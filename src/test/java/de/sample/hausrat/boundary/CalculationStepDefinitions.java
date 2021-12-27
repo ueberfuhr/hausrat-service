@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = InsuranceApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureWebFlux
-@DataR2dbcTest
 public class CalculationStepDefinitions {
 
     @Autowired

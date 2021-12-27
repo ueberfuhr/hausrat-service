@@ -27,7 +27,9 @@ public class ProductService {
         this.repo.initialize(
           new Product("COMPACT", 650),
           new Product("OPTIMAL", 700)
-        ).subscribe(p -> ProductService.log.info("Initialized Product Database with {}", p));
+        ).subscribe(p -> {
+            ProductService.log.info("Initialized Product Database with {}", p);
+        });
     }
 
 }
