@@ -1,10 +1,10 @@
 package de.sample.hausrat.domain;
 
+import de.sample.hausrat.config.properties.CalculationCurrencyProperties;
 import de.sample.hausrat.domain.model.InsuranceCalculationRequest;
 import de.sample.hausrat.domain.model.Price;
 import de.sample.hausrat.domain.model.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,15 +18,13 @@ import java.math.RoundingMode;
 public class LinearInsuranceCalculator implements InsuranceCalculator {
 
     private final ProductService service;
-
-    // see application.yml
-    @Value("${calculation.currency.precision:2}")
-    private int currencyPrecision;
-    @Value("${calculation.currency.code:EUR}")
-    private String currencyCode;
+    private final CalculationCurrencyProperties currencyProperties;
 
     private Price price(BigDecimal value) {
-        return new Price(value.setScale(currencyPrecision, RoundingMode.HALF_UP), currencyCode);
+        return new Price(
+          value.setScale(currencyProperties.getPrecision(), RoundingMode.HALF_UP),
+          currencyProperties.getCode()
+        );
     }
 
     private Price price(double value) {

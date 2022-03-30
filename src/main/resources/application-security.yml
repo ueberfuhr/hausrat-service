@@ -11,4 +11,3 @@ keycloak:
   ssl-required: external
   credentials:
     secret: 66ce1cc4-5426-4743-bcd7-06c2b0cdd581
-

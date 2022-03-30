@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.sample.hausrat.InsuranceApplication;
 import de.sample.hausrat.boundary.model.InsuranceCalculationRequestDto;
 import de.sample.hausrat.boundary.model.InsuranceCalculationResultDto;
+import de.sample.hausrat.config.properties.CalculationCurrencyProperties;
 import de.sample.hausrat.domain.ProductService;
 import de.sample.hausrat.domain.model.Product;
 import io.cucumber.java.en.Given;
@@ -11,7 +12,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,10 +41,8 @@ public class CalculationStepDefinitions {
     ObjectMapper mapper; // used to render or parse JSON
     @Autowired
     ProductService productService;
-    @Value("${calculation.currency.precision:2}")
-    private int currencyPrecision;
-    @Value("${calculation.currency.code:EUR}")
-    private String currencyCode;
+    @Autowired
+    private CalculationCurrencyProperties currencyProperties;
 
     private String product;
     private double livingArea;
@@ -56,7 +54,7 @@ public class CalculationStepDefinitions {
 
     @Given("we have a product named {string} with a single price of {int} {string}")
     public void let_product_exist(String name, int price, String currencyCode) {
-        assertThat(currencyCode).isEqualTo(this.currencyCode);
+        assertThat(currencyCode).isEqualTo(this.currencyProperties.getCode());
         productService.save(new Product(name, price));
     }
 
@@ -99,10 +97,10 @@ public class CalculationStepDefinitions {
 
     @Then("the sum insured is {float} {string}")
     public void the_sum_insured_is(double value, String currencyCode) throws Exception {
-        assertThat(currencyCode).isEqualTo(this.currencyCode);
+        assertThat(currencyCode).isEqualTo(this.currencyProperties.getCode());
         InsuranceCalculationResultDto result = executeCalculationSuccessful();
         BigDecimal expectedValue = BigDecimal.valueOf(value)
-          .setScale(this.currencyPrecision, RoundingMode.HALF_UP);
+          .setScale(this.currencyProperties.getPrecision(), RoundingMode.HALF_UP);
         assertAll(
           () -> assertThat(result.getValue()).isEqualTo(expectedValue),
           () -> assertThat(result.getCurrency()).isEqualTo(currencyCode)
