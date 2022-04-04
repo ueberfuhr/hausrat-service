@@ -51,3 +51,4 @@ spring:
       CAN_OVERRIDE_ACCESS_MODIFIERS: true
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
+    property-naming-strategy: SNAKE_CASE
