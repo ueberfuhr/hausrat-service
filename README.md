@@ -1,4 +1,5 @@
 # Household Insurance (REST service implementation with Spring Boot)
+[![Docker Image CI](https://github.com/ueberfuhr/hausrat-service/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ueberfuhr/hausrat-service/actions/workflows/docker-image.yml)
 
 ## Requirements
 
