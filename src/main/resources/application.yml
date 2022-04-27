@@ -4,6 +4,9 @@ server:
   error:
     include-stacktrace: never
     include-message: never
+  endpoints:
+    api:
+      v1: /api/v1
 
 calculation:
   currency:

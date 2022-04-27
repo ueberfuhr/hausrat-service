@@ -9,6 +9,11 @@
       "name": "calculation.currency.code",
       "type": "java.lang.String",
       "description": "The currency code that is used for the calculation."
+    },
+    {
+      "name": "server.endpoints.api.v1",
+      "type": "java.lang.String",
+      "description": "URL prefix for REST API v1."
     }
   ]
 }

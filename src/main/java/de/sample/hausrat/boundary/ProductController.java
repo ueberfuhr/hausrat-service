@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("${server.endpoints.api.v1}/products")
 @RequiredArgsConstructor
 @Validated
 @Secured(Authorities.AGENT)

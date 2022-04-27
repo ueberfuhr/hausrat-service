@@ -32,7 +32,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/v1/calculations")
+@RequestMapping("${server.endpoints.api.v1}/calculations")
 @RequiredArgsConstructor
 @Validated
 @Secured(Authorities.CUSTOMER)
